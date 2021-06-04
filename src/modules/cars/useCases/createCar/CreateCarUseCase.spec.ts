@@ -39,38 +39,37 @@ describe("Create Car", () => {
     });
 
     it("should not be able to create a new car with existing license plate", async () => {
-        expect(async () => {
-            const car = {
-                name: "Name",
-                description: "Description",
-                daily_rate: 122,
-                license_plate: "ABC",
-                fine_amount: 13,
-                brand: "Brand",
-                category_id: "1",
-            };
+        const car = {
+            name: "Name",
+            description: "Description",
+            daily_rate: 122,
+            license_plate: "ABC",
+            fine_amount: 13,
+            brand: "Brand",
+            category_id: "1",
+        };
 
+        const car_2 = {
+            name: "Name 2",
+            description: "Description 2",
+            daily_rate: 122,
+            license_plate: "ABC",
+            fine_amount: 13,
+            brand: "Brand",
+            category_id: "1",
+        };
 
-            const car_2 = {
-                name: "Name 2",
-                description: "Description 2",
-                daily_rate: 122,
-                license_plate: "ABC",
-                fine_amount: 13,
-                brand: "Brand",
-                category_id: "1",
-            };
+        await createCarUseCase.execute({
+            name: car.name,
+            description: car.description,
+            daily_rate: car.daily_rate,
+            license_plate: car.license_plate,
+            fine_amount: car.fine_amount,
+            brand: car.brand,
+            category_id: car.category_id,
+        });
 
-            await createCarUseCase.execute({
-                name: car.name,
-                description: car.description,
-                daily_rate: car.daily_rate,
-                license_plate: car.license_plate,
-                fine_amount: car.fine_amount,
-                brand: car.brand,
-                category_id: car.category_id,
-            });
-
+        await expect(
             await createCarUseCase.execute({
                 name: car_2.name,
                 description: car_2.description,
@@ -79,8 +78,8 @@ describe("Create Car", () => {
                 fine_amount: car_2.fine_amount,
                 brand: car_2.brand,
                 category_id: car_2.category_id,
-            });
-        }).rejects.toBeInstanceOf(AppError);
+            })
+        ).rejects.toEqual(new AppError("Car already exists!"));
     });
 
 

@@ -1,10 +1,16 @@
 import { v4 as uuidV4 } from 'uuid';
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 
 @Entity("rentals")
 class Rental {
     @PrimaryColumn()
     id: string;
+
+    // permite trazer os dados do carro em findByUser
+    @ManyToOne(() => Car)
+    @JoinColumn({ name: "car_id" })
+    car: Car;
 
     @Column()
     car_id: string;
