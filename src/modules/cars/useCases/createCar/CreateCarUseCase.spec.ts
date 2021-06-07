@@ -70,7 +70,7 @@ describe("Create Car", () => {
         });
 
         await expect(
-            await createCarUseCase.execute({
+            createCarUseCase.execute({
                 name: car_2.name,
                 description: car_2.description,
                 daily_rate: car_2.daily_rate,
